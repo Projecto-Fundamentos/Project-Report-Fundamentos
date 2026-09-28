@@ -1,0 +1,70 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title Dashboard and Analytics - Database Design (schema analytics)
+
+entity "analytics.herd_indicator_set" as his {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid
+  * period_from : date
+  * period_to : date
+  * monitored_cattle : integer
+  * outside_geofence : integer
+  * mortality_rate : numeric(5,2)
+  * excluded_cattle : integer
+  * calculated_at : timestamptz
+}
+entity "analytics.trend_series" as ts {
+  * id : uuid <<PK>>
+  --
+  * indicator_set_id : uuid <<FK>>
+  * indicator_type : varchar(25) <<CHECK>>
+  lot_id : uuid
+  lot_average : numeric(8,2)
+  missing_readings : integer
+}
+entity "analytics.trend_point" as tp {
+  * id : uuid <<PK>>
+  --
+  * series_id : uuid <<FK>>
+  * point_date : date
+  * value : numeric(8,2)
+}
+entity "analytics.epidemiological_curve" as ec {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid
+  * condition_type : varchar(120)
+  * first_case_at : date
+  * incubation_days : smallint
+}
+entity "analytics.curve_point" as cp {
+  * id : uuid <<PK>>
+  --
+  * curve_id : uuid <<FK>>
+  * point_date : date
+  * new_cases : smallint
+}
+entity "analytics.executive_report" as er {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid
+  * period_from : date
+  * period_to : date
+  * report_format : varchar(10) <<CHECK>>
+  * generated_at : timestamptz
+  * generated_by : uuid
+  storage_path : varchar(300)
+}
+his ||--o{ ts
+ts ||--|{ tp
+ec ||--|{ cp
+@enduml

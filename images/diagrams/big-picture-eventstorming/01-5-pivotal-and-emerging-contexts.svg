@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1250" viewBox="0 0 1800 1250">
+  <defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#8f68d5"/></marker><style>.title{font:700 30px Arial,sans-serif;fill:#222}.label{font:700 18px Arial,sans-serif;fill:#222}.note{font:14px Arial,sans-serif;fill:#222}.tiny{font:13px Arial,sans-serif;fill:#666}.pivot{fill:#d7c0ff;stroke:#9b74ed}.context{fill:#fff;stroke:#7ab8ec;stroke-width:2;stroke-dasharray:9 7}.smallcaps{font:700 11px Arial,sans-serif;fill:#5b3d87;letter-spacing:.8px}</style></defs>
+  <rect width="1800" height="1250" fill="#fff"/><rect x="20" y="20" width="1760" height="1210" fill="none" stroke="#cfcfcf"/>
+  <rect x="40" y="38" width="590" height="36" rx="5" fill="#d4c2ff" stroke="#9b74ed"/><text x="54" y="63" class="label">01.5 · Pivotal Events &amp; Emerging Contexts</text>
+  <text x="45" y="125" class="title">Etapa 5 · Pivotal Events &amp; Emerging Contexts</text><text x="45" y="158" class="tiny">Los eventos pivote orientan límites exploratorios; todavía no son bounded contexts finales.</text>
+  <text x="55" y="215" class="label">PIVOTAL / SUPPORTING EVENTS</text><text x="1030" y="215" class="label">PRELIMINARY DOMAIN AREAS</text>
+  <g stroke="#8f68d5" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M345 300H1000M345 450H1000M345 600H1000M345 750H1000M345 900L1000 900M345 1050H850V300H1000"/></g>
+  <g>
+    <rect x="55" y="255" width="290" height="105" class="pivot"/><text x="72" y="278" class="smallcaps">SUPPORTING EVENT</text><text x="72" y="315" class="note"><tspan x="72">Animal incorporado</tspan><tspan x="72" dy="20">a un lote</tspan></text>
+    <rect x="55" y="405" width="290" height="105" class="pivot"/><text x="72" y="428" class="smallcaps">PIVOT</text><text x="72" y="465" class="note"><tspan x="72">Collar vinculado</tspan><tspan x="72" dy="20">al animal</tspan></text>
+    <rect x="55" y="555" width="290" height="105" class="pivot"/><text x="72" y="578" class="smallcaps">PIVOT</text><text x="72" y="615" class="note"><tspan x="72">Umbral de temperatura</tspan><tspan x="72" dy="20">superado</tspan></text>
+    <rect x="55" y="705" width="290" height="105" class="pivot"/><text x="72" y="728" class="smallcaps">PIVOT</text><text x="72" y="765" class="note"><tspan x="72">Diagnóstico</tspan><tspan x="72" dy="20">registrado</tspan></text>
+    <rect x="55" y="855" width="290" height="105" class="pivot"/><text x="72" y="878" class="smallcaps">SUPPORTING EVENT</text><text x="72" y="915" class="note"><tspan x="72">Campaña</tspan><tspan x="72" dy="20">cerrada</tspan></text>
+    <rect x="55" y="1005" width="290" height="105" class="pivot"/><text x="72" y="1028" class="smallcaps">PIVOT</text><text x="72" y="1065" class="note"><tspan x="72">Animal dado de baja</tspan><tspan x="72" dy="20">por muerte o venta</tspan></text>
+  </g>
+  <g>
+    <rect x="1000" y="250" width="700" height="105" rx="18" class="context"/><text x="1025" y="288" class="label">Herd Identity &amp; Lifecycle</text><text x="1025" y="318" class="tiny">registro, lote, etapa y salida del animal</text>
+    <rect x="1000" y="400" width="700" height="105" rx="18" class="context"/><text x="1025" y="438" class="label">Device Onboarding &amp; Telemetry</text><text x="1025" y="468" class="tiny">asignación del collar y primeras lecturas</text>
+    <rect x="1000" y="550" width="700" height="105" rx="18" class="context"/><text x="1025" y="588" class="label">Monitoring &amp; Alert Response</text><text x="1025" y="618" class="tiny">telemetría, anomalías, alertas y atención</text>
+    <rect x="1000" y="700" width="700" height="105" rx="18" class="context"/><text x="1025" y="738" class="label">Animal Health &amp; Reproduction</text><text x="1025" y="768" class="tiny">diagnóstico, tratamiento y reproducción</text>
+    <rect x="1000" y="850" width="700" height="105" rx="18" class="context"/><text x="1025" y="888" class="label">Planning, Campaigns &amp; Reporting</text><text x="1025" y="918" class="tiny">campañas, costos, indicadores y reportes</text>
+  </g>
+  <text x="45" y="1185" class="tiny">Resultado: cinco áreas de dominio preliminares y cuatro eventos pivote; no se impone la arquitectura final.</text>
+</svg>

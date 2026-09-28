@@ -1,0 +1,94 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title Subscription Plans - Domain Layer
+
+class Subscription <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -headCount: int
+  -status: SubscriptionStatus
+  -startedAt: Date
+  -renewsAt: Date
+  +Activate(): void
+  +Renew(until: Date): void
+  +Cancel(reason: string): void
+  +CoversFeature(f: FeatureCode): bool
+  +DeviceLimitValue(): int
+  +MonthlyAmount(): Money
+}
+class Plan <<Entity>> {
+  -id: Guid
+  -type: PlanType
+  -pricePerHead: Money
+  +EstimateFor(headCount: int): Money
+  +Covers(headCount: int): bool
+}
+class Payment <<Entity>> {
+  -id: Guid
+  -subscriptionId: Guid
+  -amount: Money
+  -status: PaymentStatus
+  -processedAt: DateTime
+  -externalReference: string
+  +MarkAccepted(ref: string): void
+  +MarkRejected(reason: string): void
+}
+class Money <<Value Object>> {
+  -amount: decimal
+  -currency: string
+  +Add(o: Money): Money
+  +Multiply(f: int): Money
+}
+class DeviceLimit <<Value Object>> {
+  -maxDevices: int
+  +Allows(used: int): bool
+}
+enum PlanType {
+  Basic
+  Premium
+}
+enum SubscriptionStatus {
+  Active
+  Suspended
+  Cancelled
+  Expired
+}
+enum PaymentStatus {
+  Pending
+  Accepted
+  Rejected
+}
+enum FeatureCode {
+  AdvancedReports
+  SmsAlerts
+  HerdHealthAnalytics
+  MultiRanchPortfolio
+}
+interface ISubscriptionRepository <<Repository>> {
+  +FindByRanch(ranchId: Guid): Subscription
+  +Save(s: Subscription): void
+}
+interface IPaymentProviderPort <<Port>> {
+  +Charge(amount: Money, ref: string): Payment
+}
+Subscription "1" *-- "1" Plan : contrata >
+Subscription "1" o-- "0..*" Payment : genera >
+Subscription ..> SubscriptionStatus
+Plan "1" *-- "1" DeviceLimit
+Plan "1" *-- "1" Money : precio >
+Plan ..> PlanType
+Plan ..> FeatureCode
+Payment "1" *-- "1" Money
+Payment ..> PaymentStatus
+ISubscriptionRepository ..> Subscription
+IPaymentProviderPort ..> Payment
+@enduml

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="1250" viewBox="0 0 1900 1250">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#8d8d8d"/></marker>
+    <style>.title{font:700 30px Arial,sans-serif;fill:#222}.label{font:700 18px Arial,sans-serif;fill:#222}.body{font:16px Arial,sans-serif;fill:#555}.note{font:14px Arial,sans-serif;fill:#222}.tiny{font:13px Arial,sans-serif;fill:#666}.actor{fill:#ffe29b}.system{fill:#f39bc9}.event{fill:#ffd7aa}.lane{fill:none;stroke:#eeeeee}</style>
+  </defs>
+  <rect width="1900" height="1250" fill="#fff"/><rect x="20" y="20" width="1860" height="1210" fill="none" stroke="#cfcfcf"/>
+  <rect x="40" y="38" width="470" height="36" rx="5" fill="#bfe1f5" stroke="#6faed5"/><text x="54" y="63" class="label">01.3 · People &amp; External Systems</text>
+  <text x="45" y="125" class="title">Etapa 3 · People &amp; External Systems</text><text x="45" y="158" class="body">Cada carril asocia un actor y, cuando aplica, un sistema de apoyo con un evento del dominio.</text>
+  <text x="45" y="215" class="label">People / Actors</text><line x1="45" y1="235" x2="1855" y2="235" stroke="#ffbf3f" stroke-width="4"/>
+  <text x="45" y="485" class="label">External / Supporting Systems</text><line x1="45" y1="505" x2="1855" y2="505" stroke="#e878b2" stroke-width="4"/>
+  <text x="45" y="755" class="label">Associated Domain Events</text><line x1="45" y1="775" x2="1855" y2="775" stroke="#ff8b3d" stroke-width="4"/>
+  <g class="lane"><rect x="45" y="255" width="280" height="800"/><rect x="345" y="255" width="280" height="800"/><rect x="645" y="255" width="280" height="800"/><rect x="945" y="255" width="280" height="800"/><rect x="1245" y="255" width="280" height="800"/><rect x="1545" y="255" width="280" height="800"/></g>
+  <g>
+    <rect x="70" y="285" width="230" height="105" class="actor"/><text x="88" y="325" class="note"><tspan x="88">Cattle Rancher /</tspan><tspan x="88" dy="20">Ganadero propietario</tspan><tspan x="88" dy="20">Decide sobre el hato</tspan></text>
+    <rect x="370" y="285" width="230" height="105" class="actor"/><text x="388" y="325" class="note"><tspan x="388">Farm Administrator</tspan><tspan x="388" dy="20">Administrador</tspan><tspan x="388" dy="20">Coordina la operación</tspan></text>
+    <rect x="670" y="285" width="230" height="105" class="actor"/><text x="688" y="325" class="note"><tspan x="688">Field personnel</tspan><tspan x="688" dy="20">Registra observaciones</tspan><tspan x="688" dy="20">durante la faena</tspan></text>
+    <rect x="970" y="285" width="230" height="105" class="actor"/><text x="988" y="325" class="note"><tspan x="988">Veterinarian /</tspan><tspan x="988" dy="20">Zootechnician</tspan><tspan x="988" dy="20">Examina y trata</tspan></text>
+    <rect x="1270" y="285" width="230" height="105" class="actor"/><text x="1288" y="325" class="note"><tspan x="1288">Veterinarian /</tspan><tspan x="1288" dy="20">Zootechnician</tspan><tspan x="1288" dy="20">Registra tratamiento</tspan></text>
+    <rect x="1570" y="285" width="230" height="105" class="actor"/><text x="1588" y="325" class="note"><tspan x="1588">Cattle Rancher /</tspan><tspan x="1588" dy="20">Ganadero propietario</tspan><tspan x="1588" dy="20">Recibe el reporte</tspan></text>
+  </g>
+  <g>
+    <rect x="370" y="535" width="230" height="105" class="system"/><text x="388" y="575" class="note"><tspan x="388">Smart Collar</tspan><tspan x="388" dy="20">Emite telemetría</tspan></text>
+    <rect x="670" y="535" width="230" height="105" class="system"/><text x="688" y="575" class="note"><tspan x="688">Smart Collar</tspan><tspan x="688" dy="20">Emite lecturas</tspan></text>
+    <rect x="970" y="535" width="230" height="105" class="system"/><text x="988" y="575" class="note"><tspan x="988">Central Service</tspan><tspan x="988" dy="20">Recibe datos sincronizados</tspan></text>
+  </g>
+  <g>
+    <rect x="70" y="820" width="230" height="105" class="event"/><text x="88" y="860" class="note"><tspan x="88">Animal registrado</tspan><tspan x="88" dy="20">en el hato</tspan></text>
+    <rect x="370" y="820" width="230" height="105" class="event"/><text x="388" y="860" class="note"><tspan x="388">Collar vinculado</tspan><tspan x="388" dy="20">al animal</tspan></text>
+    <rect x="670" y="820" width="230" height="105" class="event"/><text x="688" y="860" class="note"><tspan x="688">Lectura biométrica</tspan><tspan x="688" dy="20">capturada</tspan></text>
+    <rect x="970" y="820" width="230" height="105" class="event"/><text x="988" y="860" class="note"><tspan x="988">Lectura sincronizada</tspan><tspan x="988" dy="20">con el servicio central</tspan></text>
+    <rect x="1270" y="820" width="230" height="105" class="event"/><text x="1288" y="860" class="note"><tspan x="1288">Tratamiento</tspan><tspan x="1288" dy="20">aplicado</tspan></text>
+    <rect x="1570" y="820" width="230" height="105" class="event"/><text x="1588" y="860" class="note"><tspan x="1588">Reporte entregado</tspan><tspan x="1588" dy="20">al propietario</tspan></text>
+  </g>
+  <g stroke="#8d8d8d" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M185 390V810M485 390V525M485 640V810M785 390V525M785 640V810M1085 390V525M1085 640V810M1385 390V810M1685 390V810"/></g>
+  <text x="45" y="1135" class="tiny">Los carriles hacen explícita la trazabilidad Actor → Sistema de apoyo → Domain Event sin conectores cruzados.</text>
+</svg>

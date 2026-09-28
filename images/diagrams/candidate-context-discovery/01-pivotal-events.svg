@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1100" viewBox="0 0 1800 1100">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#9b9b9b"/></marker>
+    <style>.title{font:700 30px Arial,sans-serif;fill:#222}.label{font:700 18px Arial,sans-serif;fill:#222}.body{font:16px Arial,sans-serif;fill:#555}.note{font:15px Arial,sans-serif;fill:#222}.tiny{font:13px Arial,sans-serif;fill:#666}.pivot{font:700 12px Arial,sans-serif;fill:#5b3d87;letter-spacing:1px}</style>
+  </defs>
+  <rect width="1800" height="1100" fill="#fff"/><rect x="20" y="20" width="1760" height="1060" fill="none" stroke="#cfcfcf"/>
+  <rect x="40" y="38" width="590" height="36" rx="5" fill="#f8c8a7" stroke="#e59a6a"/><text x="54" y="63" class="label">4.1.1.1 · Candidate Context Discovery · Estado 1</text>
+  <text x="45" y="125" class="title">Pivotal Events</text><text x="45" y="158" class="body">Los eventos pivote se resaltan sobre la línea temporal del Big Picture.</text>
+  <line x1="45" y1="205" x2="1755" y2="205" stroke="#ff8b3d" stroke-width="4"/>
+  <text x="45" y="240" class="tiny">Acceso y suscripción</text><text x="430" y="240" class="tiny">Configuración del ganado</text><text x="805" y="240" class="tiny">Monitoreo y respuesta</text><text x="1375" y="240" class="tiny">Cierre y análisis</text>
+  <g stroke="#9b9b9b" stroke-width="2" fill="none" marker-end="url(#arrow)"><path d="M210 420h26M400 420h26M590 420h26M780 420h26M970 420h26M1160 420h26M1350 420h26M1540 420h26"/></g>
+  <g>
+    <rect x="45" y="350" width="165" height="140" fill="#d7c0ff" stroke="#9b74ed"/><text x="60" y="376" class="pivot">PIVOTAL</text><text x="60" y="413" class="note"><tspan x="60">Suscripción</tspan><tspan x="60" dy="23">activada</tspan></text>
+    <rect x="235" y="350" width="165" height="140" fill="#ffd7aa"/><text x="250" y="413" class="note"><tspan x="250">Animal</tspan><tspan x="250" dy="23">registrado</tspan></text>
+    <rect x="425" y="350" width="165" height="140" fill="#ffd7aa"/><text x="440" y="413" class="note"><tspan x="440">Dispositivo</tspan><tspan x="440" dy="23">registrado</tspan></text>
+    <rect x="615" y="350" width="165" height="140" fill="#d7c0ff" stroke="#9b74ed"/><text x="630" y="376" class="pivot">PIVOTAL</text><text x="630" y="407" class="note"><tspan x="630">Collar</tspan><tspan x="630" dy="23">vinculado</tspan><tspan x="630" dy="23">al animal</tspan></text>
+    <rect x="805" y="350" width="165" height="140" fill="#ffd7aa"/><text x="820" y="407" class="note"><tspan x="820">Telemetría</tspan><tspan x="820" dy="23">recibida</tspan></text>
+    <rect x="995" y="350" width="165" height="140" fill="#d7c0ff" stroke="#9b74ed"/><text x="1010" y="376" class="pivot">PIVOTAL</text><text x="1010" y="407" class="note"><tspan x="1010">Umbral de</tspan><tspan x="1010" dy="23">temperatura</tspan><tspan x="1010" dy="23">superado</tspan></text>
+    <rect x="1185" y="350" width="165" height="140" fill="#d7c0ff" stroke="#9b74ed"/><text x="1200" y="376" class="pivot">PIVOTAL</text><text x="1200" y="413" class="note"><tspan x="1200">Diagnóstico</tspan><tspan x="1200" dy="23">registrado</tspan></text>
+    <rect x="1375" y="350" width="165" height="140" fill="#ffd7aa"/><text x="1390" y="413" class="note"><tspan x="1390">Reporte</tspan><tspan x="1390" dy="23">generado</tspan></text>
+    <rect x="1565" y="350" width="165" height="140" fill="#d7c0ff" stroke="#9b74ed"/><text x="1580" y="376" class="pivot">PIVOTAL</text><text x="1580" y="407" class="note"><tspan x="1580">Animal dado</tspan><tspan x="1580" dy="23">de baja</tspan></text>
+  </g>
+  <line x1="45" y1="620" x2="1755" y2="620" stroke="#dedede"/><text x="45" y="675" class="label">Selección para la siguiente etapa</text>
+  <g><rect x="45" y="715" width="165" height="95" fill="#d7c0ff" stroke="#9b74ed"/><rect x="235" y="715" width="165" height="95" fill="#d7c0ff" stroke="#9b74ed"/><rect x="425" y="715" width="165" height="95" fill="#d7c0ff" stroke="#9b74ed"/><rect x="615" y="715" width="165" height="95" fill="#d7c0ff" stroke="#9b74ed"/><rect x="805" y="715" width="165" height="95" fill="#d7c0ff" stroke="#9b74ed"/></g>
+  <text x="65" y="754" class="note"><tspan x="65">Suscripción</tspan><tspan x="65" dy="22">activada</tspan></text><text x="255" y="754" class="note"><tspan x="255">Collar vinculado</tspan><tspan x="255" dy="22">al animal</tspan></text><text x="445" y="754" class="note"><tspan x="445">Umbral de</tspan><tspan x="445" dy="22">temperatura</tspan></text><text x="635" y="754" class="note"><tspan x="635">Diagnóstico</tspan><tspan x="635" dy="22">registrado</tspan></text><text x="825" y="754" class="note"><tspan x="825">Animal dado</tspan><tspan x="825" dy="22">de baja</tspan></text>
+  <rect x="145" y="878" width="32" height="32" fill="#d7c0ff" stroke="#9b74ed"/><text x="45" y="900" class="tiny">Pivotal Event</text><rect x="310" y="878" width="32" height="32" fill="#ffd7aa"/><text x="220" y="900" class="tiny">Domain Event</text>
+  <text x="45" y="1000" class="tiny">Candidate Context Discovery · Estado progresivo 1 de 3 · Elaboración propia</text>
+</svg>

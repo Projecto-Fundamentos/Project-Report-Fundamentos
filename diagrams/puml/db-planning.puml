@@ -1,0 +1,71 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title Planning - Database Design (schema planning)
+
+entity "planning.livestock_calendar" as lc {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid
+  * year : smallint
+  --
+  UNIQUE (ranch_id, year)
+}
+entity "planning.health_campaign" as hc {
+  * id : uuid <<PK>>
+  --
+  * calendar_id : uuid <<FK>>
+  * ranch_id : uuid
+  lot_id : uuid
+  * campaign_type : varchar(20) <<CHECK>>
+  * scheduled_date : date
+  * status : varchar(15) <<CHECK>>
+  closed_at : date
+  notice_days : smallint
+}
+entity "planning.campaign_application" as ca {
+  * id : uuid <<PK>>
+  --
+  * campaign_id : uuid <<FK>>
+  * cattle_id : uuid
+  * applied : boolean
+  applied_at : date
+  --
+  UNIQUE (campaign_id, cattle_id)
+}
+entity "planning.reminder" as rem {
+  * id : uuid <<PK>>
+  --
+  * campaign_id : uuid <<FK>>
+  * emitted_at : timestamptz
+  * pending_cattle : smallint
+}
+entity "planning.follow_up_review" as fur {
+  * id : uuid <<PK>>
+  --
+  * cattle_id : uuid
+  * intervention_id : uuid
+  * scheduled_for : date
+  * status : varchar(20) <<CHECK>>
+  objective : varchar(300)
+}
+entity "planning.withdrawal_period" as wp {
+  * id : uuid <<PK>>
+  --
+  * cattle_id : uuid
+  * product : varchar(120)
+  * starts_on : date
+  * ends_on : date
+  * production_restriction : varchar(30)
+}
+lc ||--o{ hc
+hc ||--o{ ca
+hc ||--o| rem
+@enduml

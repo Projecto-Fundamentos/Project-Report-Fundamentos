@@ -1,0 +1,68 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title Identity and Access Management - Database Design (schema iam)
+
+entity "iam.user_account" as ua {
+  * id : uuid <<PK>>
+  --
+  * email : varchar(255) <<UNIQUE>>
+  * external_uid : varchar(128) <<UNIQUE>>
+  * role : varchar(20) <<CHECK>>
+  * status : varchar(25) <<CHECK>>
+  * registered_at : timestamptz
+  blocked_until : timestamptz
+  failed_attempts : smallint
+}
+entity "iam.ranch" as ranch {
+  * id : uuid <<PK>>
+  --
+  * name : varchar(150)
+  * region : varchar(80)
+  district : varchar(80)
+  estimated_head_count : integer
+  latitude : numeric(9,6)
+  longitude : numeric(9,6)
+}
+entity "iam.professional_profile" as pp {
+  * id : uuid <<PK>>
+  --
+  * user_account_id : uuid <<FK>> <<UNIQUE>>
+  * specialty : varchar(120)
+  * license_number : varchar(40) <<UNIQUE>>
+  * years_of_experience : smallint
+  * is_complete : boolean
+}
+entity "iam.ranch_membership" as rm {
+  * id : uuid <<PK>>
+  --
+  * user_account_id : uuid <<FK>>
+  * ranch_id : uuid <<FK>>
+  * membership_type : varchar(20) <<CHECK>>
+  * created_at : timestamptz
+}
+entity "iam.herd_advisory" as ha {
+  * id : uuid <<PK>>
+  --
+  * veterinarian_id : uuid <<FK>>
+  * ranch_id : uuid <<FK>>
+  * status : varchar(15) <<CHECK>>
+  * requested_at : timestamptz
+  granted_at : timestamptz
+  expires_at : timestamptz
+  revoked_at : timestamptz
+  reason : varchar(300)
+}
+ua ||--o| pp
+ua ||--o{ rm
+ranch ||--o{ rm
+ua ||--o{ ha
+ranch ||--o{ ha
+@enduml

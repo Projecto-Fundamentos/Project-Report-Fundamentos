@@ -1,0 +1,106 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title Cattle Information - Domain Layer
+
+class Cattle <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -earTag: EarTag
+  -breed: Breed
+  -sex: Sex
+  -birthDate: Date
+  -status: CattleStatus
+  -currentStage: LifeStage
+  +Register(tag: EarTag): void
+  +ChangeStage(stage: LifeStage, from: Date): void
+  +Deactivate(reason: ExitReason, date: Date): void
+  +AgeInMonths(at: Date): int
+  +IsActive(): bool
+}
+class StagePeriod <<Entity>> {
+  -id: Guid
+  -stage: LifeStage
+  -validFrom: Date
+  -validTo: Date
+  +IsCurrent(): bool
+}
+class Genealogy <<Value Object>> {
+  -sireEarTag: EarTag
+  -damEarTag: EarTag
+}
+class EarTag <<Value Object>> {
+  -value: string
+  +Equals(other: EarTag): bool
+}
+class Lot <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -name: string
+  -criterion: string
+  +AddCattle(c: Cattle): void
+  +RemoveCattle(id: Guid): void
+  +Size(): int
+}
+class Paddock <<Entity>> {
+  -id: Guid
+  -name: string
+  -areaHectares: decimal
+}
+enum Breed {
+  BrownSwiss
+  Fleckvieh
+  Criollo
+  Crossbred
+}
+enum Sex {
+  Female
+  Male
+}
+enum LifeStage {
+  Calf
+  Heifer
+  MilkingCow
+  FatteningBull
+}
+enum CattleStatus {
+  Active
+  Inactive
+}
+enum ExitReason {
+  Death
+  Sale
+  Theft
+  Culling
+}
+interface ICattleRepository <<Repository>> {
+  +FindById(id: Guid): Cattle
+  +FindByEarTag(ranchId: Guid, tag: EarTag): Cattle
+  +FindActiveByRanch(ranchId: Guid): Cattle[]
+  +Save(cattle: Cattle): void
+}
+interface ILotRepository <<Repository>> {
+  +FindById(id: Guid): Lot
+  +Save(lot: Lot): void
+}
+Cattle "1" *-- "1" EarTag
+Cattle "1" *-- "0..*" StagePeriod : historial >
+Cattle "1" *-- "0..1" Genealogy
+Cattle ..> Breed
+Cattle ..> Sex
+Cattle ..> CattleStatus
+Cattle ..> ExitReason
+StagePeriod ..> LifeStage
+Lot "1" o-- "0..*" Cattle : agrupa >
+Lot "0..*" --> "0..1" Paddock : pastorea en >
+ICattleRepository ..> Cattle
+ILotRepository ..> Lot
+@enduml

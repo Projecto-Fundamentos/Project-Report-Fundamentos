@@ -1,0 +1,63 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title Cattle Information - Database Design (schema cattle)
+
+entity "cattle.cattle" as c {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid <<FK>>
+  * ear_tag : varchar(30)
+  * breed : varchar(30) <<CHECK>>
+  * sex : varchar(10) <<CHECK>>
+  * birth_date : date
+  * status : varchar(12) <<CHECK>>
+  * current_stage : varchar(20) <<CHECK>>
+  sire_ear_tag : varchar(30)
+  dam_ear_tag : varchar(30)
+  exit_reason : varchar(15) <<CHECK>>
+  exit_date : date
+  --
+  UNIQUE (ranch_id, ear_tag)
+}
+entity "cattle.stage_period" as sp {
+  * id : uuid <<PK>>
+  --
+  * cattle_id : uuid <<FK>>
+  * stage : varchar(20) <<CHECK>>
+  * valid_from : date
+  valid_to : date
+}
+entity "cattle.lot" as lot {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid <<FK>>
+  * name : varchar(80)
+  criterion : varchar(120)
+  paddock_id : uuid <<FK>>
+}
+entity "cattle.paddock" as pad {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid <<FK>>
+  * name : varchar(80)
+  area_hectares : numeric(8,2)
+}
+entity "cattle.lot_membership" as lm {
+  * cattle_id : uuid <<PK>> <<FK>>
+  * lot_id : uuid <<PK>> <<FK>>
+  --
+  * assigned_at : timestamptz
+}
+c ||--o{ sp
+c ||--o{ lm
+lot ||--o{ lm
+pad ||--o{ lot
+@enduml

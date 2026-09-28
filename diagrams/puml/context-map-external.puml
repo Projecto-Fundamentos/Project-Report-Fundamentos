@@ -1,0 +1,42 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  FontSize 13
+}
+skinparam ArrowFontSize 11
+title ICHU - Context Map: integraciones con el borde y con sistemas externos
+
+rectangle "Cattle Band\nEmbedded App" as BAND #FFFDE7
+rectangle "Water Controller\nEmbedded App" as WATER #FFFDE7
+rectangle "Portable Edge\nGateway" as EDGE #FFFDE7
+
+rectangle "Operations & Monitoring\n<<Core Domain>>" as MON #FFE0B2
+rectangle "Identity &\nAccess Management" as IAM #E8F0FE
+rectangle "Subscription\nPlans" as SUB #E8F0FE
+
+rectangle "Firebase\nAuthentication" as FBA #ECEFF1
+rectangle "Firebase Cloud\nMessaging" as FCM #ECEFF1
+rectangle "Map Provider" as MAP #ECEFF1
+rectangle "Payment\nProvider" as PAY #ECEFF1
+
+BAND -down-> EDGE : BLE
+BAND -down-> MON : OHS\nTelemetry API
+WATER -down-> MON : OHS\nTelemetry API
+EDGE -down-> MON : ACL\nCloud API ACL
+MON -up-> EDGE : OHS\nEdge Configuration API
+
+MON -down-> FCM : ACL
+MON -down-> MAP : CF
+IAM -down-> FBA : ACL
+SUB -down-> PAY : ACL
+
+legend bottom
+  ACL = Anti-corruption Layer     OHS = Open Host Service     CF = Conformist
+  El borde y los dispositivos son downstream del core domain para la telemetría,
+  y upstream para la configuración que necesitan al operar sin conexión.
+endlegend
+@enduml

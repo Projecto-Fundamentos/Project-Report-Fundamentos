@@ -1,0 +1,87 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title Operations and Monitoring - Database Design (schema monitoring)
+
+entity "monitoring.telemetry_reading" as tr {
+  * id : uuid <<PK>>
+  --
+  * device_id : uuid
+  cattle_id : uuid
+  body_temperature : numeric(4,1)
+  activity_index : smallint
+  rumination_minutes : smallint
+  latitude : numeric(9,6)
+  longitude : numeric(9,6)
+  accuracy_meters : smallint
+  * recorded_at : timestamptz
+  * received_at : timestamptz
+  * origin : varchar(20) <<CHECK>>
+  --
+  INDEX (cattle_id, recorded_at)
+}
+entity "monitoring.alert" as al {
+  * id : uuid <<PK>>
+  --
+  * cattle_id : uuid
+  * alert_type : varchar(20) <<CHECK>>
+  * severity : varchar(15) <<CHECK>>
+  * status : varchar(25) <<CHECK>>
+  detected_value : numeric(8,2)
+  threshold_min : numeric(8,2)
+  threshold_max : numeric(8,2)
+  * raised_at : timestamptz
+  acknowledged_at : timestamptz
+  finding : varchar(400)
+}
+entity "monitoring.alert_reading" as ar {
+  * alert_id : uuid <<PK>> <<FK>>
+  * reading_id : uuid <<PK>> <<FK>>
+}
+entity "monitoring.geofence" as gf {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid
+  * name : varchar(80)
+  lot_id : uuid
+  * tolerance_meters : smallint
+}
+entity "monitoring.geofence_vertex" as gv {
+  * id : uuid <<PK>>
+  --
+  * geofence_id : uuid <<FK>>
+  * sequence : smallint
+  * latitude : numeric(9,6)
+  * longitude : numeric(9,6)
+}
+entity "monitoring.livestock_operation" as lo {
+  * id : uuid <<PK>>
+  --
+  * cattle_id : uuid
+  * operation_type : varchar(20) <<CHECK>>
+  * occurred_at : timestamptz
+  * author_id : uuid
+  observation : varchar(500)
+  * sync_state : varchar(15) <<CHECK>>
+  conflict_reason : varchar(200)
+}
+entity "monitoring.threshold" as th {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid
+  * life_stage : varchar(20)
+  * metric : varchar(25)
+  * min_value : numeric(8,2)
+  * max_value : numeric(8,2)
+}
+al ||--|{ ar
+tr ||--o{ ar
+gf ||--|{ gv
+@enduml

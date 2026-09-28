@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1500" viewBox="0 0 1800 1500">
+  <style>.title{font:700 30px Arial,sans-serif;fill:#222}.label{font:700 18px Arial,sans-serif;fill:#222}.note{font:14px Arial,sans-serif;fill:#222}.tiny{font:13px Arial,sans-serif;fill:#666}.sticky{fill:#ffd7aa}</style>
+  <rect width="1800" height="1500" fill="#fff"/><rect x="20" y="20" width="1760" height="1460" fill="none" stroke="#cfcfcf"/>
+  <rect x="40" y="38" width="410" height="36" rx="5" fill="#f8c8a7" stroke="#e59a6a"/><text x="54" y="63" class="label">01.1 · Chaotic Exploration</text>
+  <text x="45" y="125" class="title">Etapa 1 · Chaotic Exploration</text><text x="45" y="158" class="tiny">Hechos del dominio identificados en las entrevistas; sin ordenar, depurar ni discutir su solución.</text>
+  <g>
+    <rect x="45" y="220" width="245" height="100" class="sticky"/><text x="62" y="260" class="note"><tspan x="62">Animal registrado</tspan><tspan x="62" dy="21">en el hato</tspan></text>
+    <rect x="335" y="220" width="245" height="100" class="sticky"/><text x="352" y="260" class="note"><tspan x="352">Arete asignado</tspan><tspan x="352" dy="21">al animal</tspan></text>
+    <rect x="625" y="220" width="245" height="100" class="sticky"/><text x="642" y="260" class="note"><tspan x="642">Animal incorporado</tspan><tspan x="642" dy="21">a un lote</tspan></text>
+    <rect x="915" y="220" width="245" height="100" class="sticky"/><text x="932" y="260" class="note"><tspan x="932">Etapa productiva</tspan><tspan x="932" dy="21">registrada</tspan></text>
+    <rect x="1205" y="220" width="245" height="100" class="sticky"/><text x="1222" y="260" class="note"><tspan x="1222">Collar recibido por</tspan><tspan x="1222" dy="21">la unidad productiva</tspan></text>
+    <rect x="1495" y="220" width="245" height="100" class="sticky"/><text x="1512" y="260" class="note"><tspan x="1512">Collar vinculado</tspan><tspan x="1512" dy="21">al animal</tspan></text>
+    <rect x="45" y="350" width="245" height="100" class="sticky"/><text x="62" y="390" class="note"><tspan x="62">Primera lectura</tspan><tspan x="62" dy="21">recibida del collar</tspan></text>
+    <rect x="335" y="350" width="245" height="100" class="sticky"/><text x="352" y="390" class="note"><tspan x="352">Lectura biométrica</tspan><tspan x="352" dy="21">capturada</tspan></text>
+    <rect x="625" y="350" width="245" height="100" class="sticky"/><text x="642" y="390" class="note"><tspan x="642">Lectura almacenada</tspan><tspan x="642" dy="21">en el borde</tspan></text>
+    <rect x="915" y="350" width="245" height="100" class="sticky"/><text x="932" y="390" class="note"><tspan x="932">Lectura sincronizada</tspan><tspan x="932" dy="21">con el servicio central</tspan></text>
+    <rect x="1205" y="350" width="245" height="100" class="sticky"/><text x="1222" y="390" class="note"><tspan x="1222">Posición del animal</tspan><tspan x="1222" dy="21">registrada</tspan></text>
+    <rect x="1495" y="350" width="245" height="100" class="sticky"/><text x="1512" y="390" class="note"><tspan x="1512">Umbral de temperatura</tspan><tspan x="1512" dy="21">superado</tspan></text>
+    <rect x="45" y="480" width="245" height="100" class="sticky"/><text x="62" y="520" class="note"><tspan x="62">Caída de rumia</tspan><tspan x="62" dy="21">detectada</tspan></text>
+    <rect x="335" y="480" width="245" height="100" class="sticky"/><text x="352" y="520" class="note"><tspan x="352">Patrón de actividad</tspan><tspan x="352" dy="21">inusual detectado</tspan></text>
+    <rect x="625" y="480" width="245" height="100" class="sticky"/><text x="642" y="520" class="note"><tspan x="642">Animal ubicado fuera</tspan><tspan x="642" dy="21">de la zona de pastoreo</tspan></text>
+    <rect x="915" y="480" width="245" height="100" class="sticky"/><text x="932" y="520" class="note"><tspan x="932">Alerta emitida</tspan><tspan x="932" dy="21">al responsable</tspan></text>
+    <rect x="1205" y="480" width="245" height="100" class="sticky"/><text x="1222" y="520" class="note"><tspan x="1222">Alerta</tspan><tspan x="1222" dy="21">atendida</tspan></text>
+    <rect x="1495" y="480" width="245" height="100" class="sticky"/><text x="1512" y="520" class="note"><tspan x="1512">Animal</tspan><tspan x="1512" dy="21">examinado</tspan></text>
+    <rect x="45" y="610" width="245" height="100" class="sticky"/><text x="62" y="650" class="note"><tspan x="62">Diagnóstico</tspan><tspan x="62" dy="21">registrado</tspan></text>
+    <rect x="335" y="610" width="245" height="100" class="sticky"/><text x="352" y="650" class="note"><tspan x="352">Tratamiento</tspan><tspan x="352" dy="21">aplicado</tspan></text>
+    <rect x="625" y="610" width="245" height="100" class="sticky"/><text x="642" y="650" class="note"><tspan x="642">Periodo de retiro</tspan><tspan x="642" dy="21">iniciado</tspan></text>
+    <rect x="915" y="610" width="245" height="100" class="sticky"/><text x="932" y="650" class="note"><tspan x="932">Periodo de retiro</tspan><tspan x="932" dy="21">concluido</tspan></text>
+    <rect x="1205" y="610" width="245" height="100" class="sticky"/><text x="1222" y="650" class="note"><tspan x="1222">Celo</tspan><tspan x="1222" dy="21">detectado</tspan></text>
+    <rect x="1495" y="610" width="245" height="100" class="sticky"/><text x="1512" y="650" class="note"><tspan x="1512">Servicio</tspan><tspan x="1512" dy="21">registrado</tspan></text>
+    <rect x="45" y="740" width="245" height="100" class="sticky"/><text x="62" y="780" class="note"><tspan x="62">Preñez confirmada</tspan><tspan x="62" dy="21">por ecografía</tspan></text>
+    <rect x="335" y="740" width="245" height="100" class="sticky"/><text x="352" y="780" class="note"><tspan x="352">Parto</tspan><tspan x="352" dy="21">registrado</tspan></text>
+    <rect x="625" y="740" width="245" height="100" class="sticky"/><text x="642" y="780" class="note"><tspan x="642">Cría registrada</tspan><tspan x="642" dy="21">en el hato</tspan></text>
+    <rect x="915" y="740" width="245" height="100" class="sticky"/><text x="932" y="780" class="note"><tspan x="932">Campaña sanitaria</tspan><tspan x="932" dy="21">programada</tspan></text>
+    <rect x="1205" y="740" width="245" height="100" class="sticky"/><text x="1222" y="780" class="note"><tspan x="1222">Recordatorio de campaña</tspan><tspan x="1222" dy="21">emitido</tspan></text>
+    <rect x="1495" y="740" width="245" height="100" class="sticky"/><text x="1512" y="780" class="note"><tspan x="1512">Aplicación registrada</tspan><tspan x="1512" dy="21">por animal</tspan></text>
+    <rect x="45" y="870" width="245" height="100" class="sticky"/><text x="62" y="910" class="note"><tspan x="62">Campaña</tspan><tspan x="62" dy="21">cerrada</tspan></text>
+    <rect x="335" y="870" width="245" height="100" class="sticky"/><text x="352" y="910" class="note"><tspan x="352">Costo de campaña</tspan><tspan x="352" dy="21">consolidado</tspan></text>
+    <rect x="625" y="870" width="245" height="100" class="sticky"/><text x="642" y="910" class="note"><tspan x="642">Indicadores del periodo</tspan><tspan x="642" dy="21">calculados</tspan></text>
+    <rect x="915" y="870" width="245" height="100" class="sticky"/><text x="932" y="910" class="note"><tspan x="932">Reporte entregado</tspan><tspan x="932" dy="21">al propietario</tspan></text>
+    <rect x="1205" y="870" width="245" height="100" class="sticky"/><text x="1222" y="910" class="note"><tspan x="1222">Animal dado de baja</tspan><tspan x="1222" dy="21">por muerte</tspan></text>
+    <rect x="1495" y="870" width="245" height="100" class="sticky"/><text x="1512" y="910" class="note"><tspan x="1512">Animal dado de baja</tspan><tspan x="1512" dy="21">por venta</tspan></text>
+    <rect x="45" y="1000" width="245" height="100" class="sticky"/><text x="62" y="1040" class="note"><tspan x="62">Robo de animal</tspan><tspan x="62" dy="21">denunciado</tspan></text>
+    <rect x="335" y="1000" width="245" height="100" class="sticky"/><text x="352" y="1040" class="note"><tspan x="352">Collar</tspan><tspan x="352" dy="21">liberado</tspan></text>
+  </g>
+  <text x="45" y="1260" class="tiny">Resultado de la etapa: 38 Domain Events identificados, todavía sin ordenar ni depurar.</text><text x="45" y="1320" class="tiny">Candidate Context Discovery · Evidencia 1 de 5 · Elaboración propia</text>
+</svg>

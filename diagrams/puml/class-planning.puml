@@ -1,0 +1,98 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title Planning - Domain Layer
+
+class LivestockCalendar <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -year: int
+  +Schedule(c: HealthCampaign): void
+  +UpcomingWithin(days: int): HealthCampaign[]
+}
+class HealthCampaign <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -lotId: Guid
+  -type: CampaignType
+  -scheduledDate: Date
+  -status: CampaignStatus
+  -closedAt: Date
+  +Schedule(date: Date, lotId: Guid): void
+  +RegisterApplication(cattleId: Guid, at: Date): void
+  +ProgressPercentage(): decimal
+  +Close(): void
+  +OverlapsWithdrawal(p: WithdrawalPeriod): bool
+}
+class CampaignApplication <<Entity>> {
+  -id: Guid
+  -cattleId: Guid
+  -appliedAt: Date
+  -applied: bool
+}
+class FollowUpReview <<Entity>> {
+  -id: Guid
+  -cattleId: Guid
+  -interventionId: Guid
+  -scheduledFor: Date
+  -status: ReviewStatus
+  -objective: string
+  +MarkNotApplicable(reason: string): void
+}
+class Reminder <<Entity>> {
+  -id: Guid
+  -campaignId: Guid
+  -noticeDays: int
+  -emittedAt: DateTime
+  +ShouldEmit(today: Date, scheduled: Date): bool
+}
+class WithdrawalPeriod <<Value Object>> {
+  -product: string
+  -endsOn: Date
+  +IsActiveOn(d: Date): bool
+}
+enum CampaignType {
+  Vaccination
+  Deworming
+  Vitaminization
+  Checkup
+  Quarantine
+}
+enum CampaignStatus {
+  Scheduled
+  InExecution
+  Executed
+  Cancelled
+}
+enum ReviewStatus {
+  Scheduled
+  Completed
+  NotApplicable
+}
+class ReminderDomainService <<Domain Service>> {
+  +EmitDue(c: HealthCampaign[], today: Date): Reminder[]
+  +PendingCattle(c: HealthCampaign): int
+}
+interface IPlanningRepository <<Repository>> {
+  +FindCalendar(ranchId: Guid, year: int): LivestockCalendar
+  +FindOverdueCampaigns(ranchIds: Guid[]): HealthCampaign[]
+  +Save(c: HealthCampaign): void
+}
+LivestockCalendar "1" o-- "0..*" HealthCampaign : programa >
+HealthCampaign "1" *-- "0..*" CampaignApplication : avance >
+HealthCampaign "1" *-- "0..1" Reminder : aviso >
+HealthCampaign ..> CampaignType
+HealthCampaign ..> CampaignStatus
+HealthCampaign ..> WithdrawalPeriod : verifica >
+FollowUpReview ..> ReviewStatus
+ReminderDomainService ..> Reminder : emite >
+IPlanningRepository ..> LivestockCalendar
+@enduml

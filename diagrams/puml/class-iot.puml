@@ -1,0 +1,81 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title IoT Assets - Domain Layer
+
+class IoTDevice <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -serial: DeviceSerial
+  -type: DeviceType
+  -status: DeviceStatus
+  -lastCommunicationAt: DateTime
+  -batteryLevel: BatteryLevel
+  +AssignTo(targetId: Guid, at: DateTime): void
+  +Release(reason: string, at: DateTime): void
+  +RegisterCommunication(at: DateTime, b: BatteryLevel): void
+  +IsAvailable(): bool
+  +HasLostCommunication(now: DateTime): bool
+}
+class DeviceAssignment <<Entity>> {
+  -id: Guid
+  -targetId: Guid
+  -startedAt: DateTime
+  -endedAt: DateTime
+  -releaseReason: string
+  +IsOpen(): bool
+  +CoversInstant(at: DateTime): bool
+}
+class DeviceSerial <<Value Object>> {
+  -value: string
+}
+class BatteryLevel <<Value Object>> {
+  -percentage: int
+  +IsLow(): bool
+}
+enum DeviceType {
+  SmartCollar
+  WaterController
+}
+enum DeviceStatus {
+  Available
+  InService
+  NoCommunication
+  LowBattery
+  Maintenance
+}
+class DeviceAssignmentDomainService <<Domain Service>> {
+  +CanAssign(d: IoTDevice, limit: int, used: int): bool
+  +Assign(d: IoTDevice, targetId: Guid): DeviceAssignment
+}
+interface IIoTDeviceRepository <<Repository>> {
+  +FindById(id: Guid): IoTDevice
+  +FindBySerial(serial: DeviceSerial): IoTDevice
+  +FindByRanch(ranchId: Guid): IoTDevice[]
+  +CountAssigned(ranchId: Guid): int
+  +Save(device: IoTDevice): void
+}
+interface ISubscriptionEntitlementPort <<Port>> {
+  +GetDeviceLimit(ranchId: Guid): int
+}
+interface ICattleLookupPort <<Port>> {
+  +Exists(cattleId: Guid): bool
+}
+IoTDevice "1" *-- "0..*" DeviceAssignment : historial >
+IoTDevice "1" *-- "1" DeviceSerial
+IoTDevice "1" *-- "1" BatteryLevel
+IoTDevice ..> DeviceType
+IoTDevice ..> DeviceStatus
+DeviceAssignmentDomainService ..> IoTDevice : asigna >
+DeviceAssignmentDomainService ..> ISubscriptionEntitlementPort : consulta >
+DeviceAssignmentDomainService ..> ICattleLookupPort : valida >
+IIoTDeviceRepository ..> IoTDevice
+@enduml

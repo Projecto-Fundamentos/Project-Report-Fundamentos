@@ -1,0 +1,38 @@
+@startuml
+!pragma layout smetana
+skinparam shadowing false
+skinparam defaultTextAlignment center
+skinparam rectangle {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  FontSize 13
+}
+skinparam ArrowFontSize 11
+title ICHU - Context Map: relaciones entre Bounded Contexts
+
+rectangle "Identity &\nAccess Management" as IAM #E8F0FE
+rectangle "Subscription\nPlans" as SUB #E8F0FE
+rectangle "Cattle\nInformation" as CATTLE #E8F5E9
+rectangle "IoT Assets" as IOT #E8F5E9
+rectangle "Operations & Monitoring\n<<Core Domain>>" as MON #FFE0B2
+rectangle "Planning" as PLAN #E8F5E9
+rectangle "Dashboard &\nAnalytics" as ANA #F3E5F5
+
+IAM -down-> CATTLE : SK
+IAM -down-> MON : SK
+SUB -down-> IOT : ACL
+CATTLE -down-> IOT : ACL
+CATTLE -down-> MON : ACL
+CATTLE -down-> PLAN : C/S
+IOT -down-> MON : ACL
+MON -down-> PLAN : C/S
+MON -down-> ANA : CF
+PLAN -down-> ANA : CF
+CATTLE -down-> ANA : CF
+
+legend bottom
+  SK  = Shared Kernel        ACL = Anti-corruption Layer
+  C/S = Customer/Supplier    CF  = Conformist
+  La flecha apunta del contexto upstream al downstream.
+endlegend
+@enduml

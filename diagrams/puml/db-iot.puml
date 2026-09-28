@@ -1,0 +1,45 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title IoT Assets - Database Design (schema iot)
+
+entity "iot.device" as dev {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid <<FK>>
+  * serial : varchar(50) <<UNIQUE>>
+  * device_type : varchar(20) <<CHECK>>
+  * status : varchar(20) <<CHECK>>
+  last_communication_at : timestamptz
+  battery_percentage : smallint <<CHECK>>
+  firmware_version : varchar(20)
+}
+entity "iot.device_assignment" as da {
+  * id : uuid <<PK>>
+  --
+  * device_id : uuid <<FK>>
+  * target_id : uuid
+  * target_type : varchar(20) <<CHECK>>
+  * started_at : timestamptz
+  ended_at : timestamptz
+  release_reason : varchar(120)
+}
+entity "iot.water_trough" as wt {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid <<FK>>
+  * name : varchar(80)
+  lot_id : uuid
+  min_temperature : numeric(4,1)
+  max_temperature : numeric(4,1)
+}
+dev ||--o{ da
+wt ||--o{ da
+@enduml

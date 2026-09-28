@@ -1,0 +1,91 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title Dashboard and Analytics - Domain Layer
+
+class HerdIndicatorSet <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -period: DateRange
+  -monitoredCattle: int
+  -outsideGeofence: int
+  -mortalityRate: decimal
+  -excludedCattle: int
+  +Calculate(): void
+  +HasSufficientData(): bool
+}
+class TrendSeries <<Entity>> {
+  -id: Guid
+  -indicator: IndicatorType
+  -lotId: Guid
+  -lotAverage: decimal
+  +Outliers(criterion: decimal): Guid[]
+  +MissingReadings(): int
+}
+class TrendPoint <<Value Object>> {
+  -date: Date
+  -value: decimal
+}
+class EpidemiologicalCurve <<Entity>> {
+  -id: Guid
+  -conditionType: string
+  -firstCaseAt: Date
+  -incubationDays: int
+  +DaysWithoutNewCases(): int
+  +SupportsRestrictionLifting(): bool
+  +IsBuildable(): bool
+}
+class ExecutiveReport <<Entity>> {
+  -id: Guid
+  -ranchId: Guid
+  -period: DateRange
+  -format: ReportFormat
+  -generatedAt: DateTime
+  +IsEmpty(): bool
+}
+class DateRange <<Value Object>> {
+  -from: Date
+  -to: Date
+  +Days(): int
+  +Contains(d: Date): bool
+}
+enum IndicatorType {
+  BodyTemperature
+  ActivityIndex
+  Rumination
+  AlertDistribution
+  Mortality
+}
+enum ReportFormat {
+  Pdf
+  Excel
+}
+class AnalyticsDomainService <<Domain Service>> {
+  +BuildIndicators(ranchId: Guid, p: DateRange): HerdIndicatorSet
+  +BuildTrend(lotId: Guid, i: IndicatorType, p: DateRange): TrendSeries
+  +BuildCurve(ranchId: Guid, condition: string): EpidemiologicalCurve
+  +CompareAgainstLot(cattleId: Guid, lotId: Guid): TrendSeries
+}
+interface IAnalyticsRepository <<Repository>> {
+  +ReadingsForPeriod(ranchId: Guid, p: DateRange): TrendPoint[]
+  +AlertsForPeriod(ranchId: Guid, p: DateRange): TrendPoint[]
+  +Save(r: ExecutiveReport): void
+}
+HerdIndicatorSet "1" *-- "1" DateRange
+HerdIndicatorSet "1" o-- "0..*" TrendSeries : incluye >
+TrendSeries "1" *-- "0..*" TrendPoint
+TrendSeries ..> IndicatorType
+ExecutiveReport "1" *-- "1" DateRange
+ExecutiveReport ..> ReportFormat
+AnalyticsDomainService ..> HerdIndicatorSet : calcula >
+AnalyticsDomainService ..> EpidemiologicalCurve : construye >
+IAnalyticsRepository ..> ExecutiveReport
+@enduml

@@ -1,0 +1,105 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title Identity & Access Management - Domain Layer
+
+class UserAccount <<Aggregate Root>> {
+  -id: Guid
+  -email: Email
+  -externalUid: string
+  -role: UserRole
+  -status: AccountStatus
+  -registeredAt: DateTime
+  +Verify(): void
+  +ChangeRole(role: UserRole): void
+  +Block(minutes: int): void
+  +IsActive(): bool
+}
+class ProfessionalProfile <<Entity>> {
+  -id: Guid
+  -specialty: string
+  -licenseNumber: LicenseNumber
+  -yearsOfExperience: int
+  -isComplete: bool
+  +Complete(s: string, l: LicenseNumber, y: int): void
+}
+class RanchMembership <<Entity>> {
+  -id: Guid
+  -ranchId: Guid
+  -membershipType: MembershipType
+  +GrantsAccessTo(ranchId: Guid): bool
+}
+class HerdAdvisory <<Entity>> {
+  -id: Guid
+  -ranchId: Guid
+  -status: AdvisoryStatus
+  -grantedAt: DateTime
+  -expiresAt: DateTime
+  +Grant(expiresAt: DateTime): void
+  +Revoke(): void
+  +Expire(): void
+  +IsValidOn(date: DateTime): bool
+}
+class Email <<Value Object>> {
+  -value: string
+  +IsValid(): bool
+}
+class LicenseNumber <<Value Object>> {
+  -value: string
+  +Equals(other: LicenseNumber): bool
+}
+enum UserRole {
+  RanchManager
+  FieldOperator
+  Veterinarian
+}
+enum AccountStatus {
+  PendingVerification
+  Active
+  TemporarilyBlocked
+}
+enum AdvisoryStatus {
+  Pending
+  Granted
+  Revoked
+  Expired
+}
+enum MembershipType {
+  Owner
+  Operator
+}
+class AuthorizationDomainService <<Domain Service>> {
+  +CanAccessRanch(a: UserAccount, ranchId: Guid): bool
+  +CanModifyClinicalRecord(a: UserAccount, ranchId: Guid): bool
+}
+interface IUserAccountRepository <<Repository>> {
+  +FindById(id: Guid): UserAccount
+  +FindByEmail(email: Email): UserAccount
+  +Save(account: UserAccount): void
+}
+interface IHerdAdvisoryRepository <<Repository>> {
+  +FindActiveByVeterinarian(id: Guid): HerdAdvisory[]
+  +Save(advisory: HerdAdvisory): void
+}
+UserAccount "1" *-- "0..1" ProfessionalProfile : tiene >
+UserAccount "1" *-- "0..*" RanchMembership : pertenece a >
+UserAccount "1" o-- "0..*" HerdAdvisory : solicita >
+UserAccount "1" *-- "1" Email
+UserAccount ..> UserRole
+UserAccount ..> AccountStatus
+ProfessionalProfile "1" *-- "1" LicenseNumber
+HerdAdvisory ..> AdvisoryStatus
+RanchMembership ..> MembershipType
+AuthorizationDomainService ..> UserAccount : evalua >
+AuthorizationDomainService ..> HerdAdvisory : evalua >
+IUserAccountRepository ..> UserAccount
+IHerdAdvisoryRepository ..> HerdAdvisory
+@enduml

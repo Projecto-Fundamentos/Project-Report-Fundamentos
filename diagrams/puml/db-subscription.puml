@@ -1,0 +1,53 @@
+@startuml
+!pragma layout smetana
+hide circle
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+title Subscription Plans - Database Design (schema subscription)
+
+entity "subscription.plan" as pl {
+  * id : uuid <<PK>>
+  --
+  * plan_type : varchar(15) <<UNIQUE>> <<CHECK>>
+  * max_devices : integer
+  * price_per_head : numeric(10,2)
+  * currency : char(3)
+  * is_active : boolean
+}
+entity "subscription.plan_feature" as pf {
+  * plan_id : uuid <<PK>> <<FK>>
+  * feature_code : varchar(30) <<PK>> <<CHECK>>
+}
+entity "subscription.subscription" as sub {
+  * id : uuid <<PK>>
+  --
+  * ranch_id : uuid <<UNIQUE>>
+  * plan_id : uuid <<FK>>
+  * head_count : integer <<CHECK>>
+  * status : varchar(15) <<CHECK>>
+  * started_at : date
+  * renews_at : date
+  cancelled_at : date
+  cancel_reason : varchar(200)
+}
+entity "subscription.payment" as pay {
+  * id : uuid <<PK>>
+  --
+  * subscription_id : uuid <<FK>>
+  * amount : numeric(10,2)
+  * currency : char(3)
+  * status : varchar(12) <<CHECK>>
+  * requested_at : timestamptz
+  processed_at : timestamptz
+  external_reference : varchar(120)
+  rejection_reason : varchar(200)
+}
+pl ||--|{ pf
+pl ||--o{ sub
+sub ||--o{ pay
+@enduml

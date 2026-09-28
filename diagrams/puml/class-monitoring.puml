@@ -1,0 +1,140 @@
+@startuml
+!pragma layout smetana
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor #FFFFFF
+  BorderColor #4A6FA5
+  ArrowColor #4A6FA5
+}
+hide empty members
+title Operations and Monitoring - Domain Layer
+
+class TelemetryReading <<Aggregate Root>> {
+  -id: Guid
+  -deviceId: Guid
+  -cattleId: Guid
+  -bodyTemperature: decimal
+  -activityIndex: int
+  -ruminationMinutes: int
+  -position: GeoPosition
+  -recordedAt: DateTime
+  -receivedAt: DateTime
+  -origin: ReadingOrigin
+  +IsValid(): bool
+  +IsStale(now: DateTime): bool
+}
+class MonitoringAlert <<Aggregate Root>> {
+  -id: Guid
+  -cattleId: Guid
+  -type: AlertType
+  -severity: AlertSeverity
+  -status: AlertStatus
+  -detectedValue: decimal
+  -threshold: Threshold
+  -raisedAt: DateTime
+  -acknowledgedAt: DateTime
+  +Raise(v: decimal, t: Threshold): void
+  +Absorb(r: TelemetryReading): void
+  +Acknowledge(finding: string, at: DateTime): void
+  +ExpireWithoutAttention(): void
+  +ResponseTime(): TimeSpan
+}
+class Geofence <<Aggregate Root>> {
+  -id: Guid
+  -ranchId: Guid
+  -name: string
+  -toleranceMeters: int
+  +IsClosedPolygon(): bool
+  +Contains(p: GeoPosition): bool
+  +DistanceToBoundary(p: GeoPosition): decimal
+}
+class LivestockOperation <<Aggregate Root>> {
+  -id: Guid
+  -cattleId: Guid
+  -type: OperationType
+  -occurredAt: DateTime
+  -authorId: Guid
+  -observation: string
+  -syncState: SyncState
+  +Register(): void
+  +MarkSynchronized(): void
+  +MarkConflict(reason: string): void
+}
+class Threshold <<Value Object>> {
+  -lifeStage: string
+  -minValue: decimal
+  -maxValue: decimal
+  +IsExceededBy(v: decimal): bool
+}
+class GeoPosition <<Value Object>> {
+  -latitude: decimal
+  -longitude: decimal
+  -accuracyMeters: int
+  +DistanceTo(o: GeoPosition): decimal
+}
+enum AlertType {
+  Temperature
+  Geofence
+  Activity
+  Reproductive
+  WaterTemperature
+}
+enum AlertSeverity {
+  Informative
+  Warning
+  Critical
+}
+enum AlertStatus {
+  Open
+  Acknowledged
+  ExpiredWithoutAttention
+}
+enum OperationType {
+  HealthEvent
+  Vaccination
+  Treatment
+  Insemination
+  Birth
+}
+enum ReadingOrigin {
+  DirectFromDevice
+  EdgeGateway
+}
+enum SyncState {
+  Pending
+  Synchronized
+  Conflict
+}
+class MonitoringRulesDomainService <<Domain Service>> {
+  +EvaluateTemperature(r: TelemetryReading, t: Threshold): MonitoringAlert
+  +EvaluateGeofence(r: TelemetryReading, g: Geofence): MonitoringAlert
+  +DetectReproductivePattern(h: TelemetryReading[]): bool
+  +IsDuplicateWithinWindow(a: MonitoringAlert, r: TelemetryReading): bool
+}
+interface IMonitoringRepository <<Repository>> {
+  +FindReadings(cattleId: Guid, from: DateTime, to: DateTime): TelemetryReading[]
+  +FindOpenAlert(cattleId: Guid, type: AlertType): MonitoringAlert
+  +Save(alert: MonitoringAlert): void
+  +SaveReading(r: TelemetryReading): void
+}
+interface IGeofenceRepository <<Repository>> {
+  +FindByLot(lotId: Guid): Geofence
+  +Save(g: Geofence): void
+}
+MonitoringAlert "1" o-- "1..*" TelemetryReading : sustentada por >
+MonitoringAlert "1" *-- "1" Threshold
+TelemetryReading "1" *-- "1" GeoPosition
+Geofence "1" *-- "3..*" GeoPosition : vertices >
+MonitoringAlert ..> AlertType
+MonitoringAlert ..> AlertSeverity
+MonitoringAlert ..> AlertStatus
+TelemetryReading ..> ReadingOrigin
+LivestockOperation ..> OperationType
+LivestockOperation ..> SyncState
+MonitoringRulesDomainService ..> MonitoringAlert : genera >
+MonitoringRulesDomainService ..> Geofence : evalua >
+IMonitoringRepository ..> MonitoringAlert
+IGeofenceRepository ..> Geofence
+@enduml
