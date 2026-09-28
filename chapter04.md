@@ -128,12 +128,73 @@ Las tácticas hacen verificables los atributos de calidad. Las cifras de 4.2.3 s
 | Modificabilidad | Contratos versionados y módulos por responsabilidad. | Cambiar una regla sin modificar entrada IoT o móvil. |
 | Observabilidad | Correlación y métricas de edad de lectura, cola, errores y avisos. | Seguir una lectura desde el dispositivo hasta la alerta. |
 
-## 4.2 Architectural Drivers
-### 4.1.8 Design Purpose
-### 4.1.9 Primary Functionality (Primary User Stories)
-### 4.1.10 Quality Attribute Scenarios
-### 4.1.11 Constraints
-### 4.1.12 Architectural Concerns
+## 4.2. Architectural Drivers
+
+Los *architectural drivers* son los requisitos y condiciones que influyen de manera significativa en el diseño de SmartFarm. Se identifican a partir de las historias de usuario, las necesidades del sector ganadero y las condiciones de conectividad en las zonas de operación. Estos drivers orientarán las decisiones de diseño que se desarrollen en las iteraciones ADD de la sección 4.3.
+
+### 4.2.1. Design Purpose
+
+El propósito del diseño arquitectónico de SmartFarm es definir una solución que permita monitorear bovinos mediante dispositivos IoT y transformar los datos de ubicación, temperatura y actividad en información útil para propietarios, operarios de campo y médicos veterinarios.
+
+La arquitectura debe respaldar el ciclo completo de atención de una incidencia: recibir la telemetría, asociarla con el bovino correspondiente, detectar una condición que requiera atención, generar una alerta, registrar la intervención y conservar el historial. Asimismo, debe permitir que el operario consulte información descargada previamente y registre observaciones cuando se encuentre en una zona sin conexión.
+
+Para cumplir este propósito, el diseño debe establecer responsabilidades claras para los dispositivos IoT, el procesamiento en el borde (*edge*), los servicios centrales y las aplicaciones web y móvil. Esta organización facilitará la trazabilidad de los datos y permitirá identificar qué funciones pueden continuar operando durante una interrupción de la conexión a internet.
+
+### 4.2.2. Primary Functionality (Primary User Stories)
+
+Las siguientes historias de usuario se consideran prioritarias para el diseño arquitectónico porque determinan la organización de los datos, los servicios y la comunicación entre los componentes del sistema. Sus identificadores corresponden a las historias y al Product Backlog del capítulo III.
+
+| Funcionalidad principal | Historias de usuario | Implicancia arquitectónica |
+|---|---|---|
+| Gestión de bovinos, lotes y dispositivos | ICHU-US-07, ICHU-US-20 | Mantener la relación entre cada bovino, su lote y el dispositivo asociado; evitar asociaciones activas duplicadas. |
+| Recepción y consulta de telemetría | ICHU-US-03, ICHU-US-05, ICHU-US-14 | Procesar lecturas de ubicación, temperatura y actividad, y conservar la fecha y hora originales de cada captura. |
+| Detección y atención de alertas | ICHU-US-02, ICHU-US-04, ICHU-US-08, ICHU-US-09 | Evaluar geocercas y condiciones de riesgo; generar alertas y registrar su asignación, atención y estado. |
+| Operación en campo sin conexión | ICHU-US-10, ICHU-US-11, ICHU-US-12, ICHU-US-13 | Consultar información almacenada en el dispositivo móvil, guardar incidencias pendientes y sincronizarlas al recuperar la conexión. |
+| Seguimiento clínico | ICHU-US-15, ICHU-US-16, ICHU-US-17 | Relacionar observaciones, diagnósticos, indicaciones y evolución clínica con el historial del bovino, sin eliminar registros anteriores. |
+| Visualización del estado de la estancia | ICHU-US-01 | Presentar el inventario, los indicadores principales y las alertas activas en una vista para el propietario o administrador. |
+
+Estas funcionalidades conforman el ciclo principal de monitoreo del MVP. Los reportes avanzados, las reglas configurables y las integraciones externas podrán incorporarse de acuerdo con las prioridades establecidas en el Product Backlog.
+
+### 4.2.3. Quality Attribute Scenarios
+
+Los escenarios de atributos de calidad describen situaciones concretas que deberán verificarse durante la implementación. Las medidas presentadas son metas iniciales de diseño y deberán validarse mediante pruebas con los dispositivos, la red y la infraestructura seleccionados.
+
+| ID | Atributo de calidad e historias asociadas | Fuente, estímulo y entorno | Artefacto y respuesta esperada | Medida de respuesta propuesta |
+|---|---|---|---|---|
+| QA-01 | **Funcionamiento sin conexión:** ICHU-US-10, ICHU-US-12, ICHU-US-13 | Un capataz consulta la última ubicación conocida y registra una incidencia mientras su teléfono no tiene conexión a internet. | La aplicación móvil muestra la información almacenada y su antigüedad. Además, guarda la incidencia localmente y la sincroniza cuando se restablece la conexión. | La incidencia permanece disponible después de cerrar y volver a abrir la aplicación. Su estado indica si está pendiente, sincronizada o requiere revisión. |
+| QA-02 | **Integridad de los datos:** ICHU-US-12, ICHU-US-13, ICHU-US-15, ICHU-US-16 | La conexión se interrumpe durante el envío de una incidencia y la aplicación vuelve a intentarlo. | El servicio de sincronización identifica el registro para evitar duplicaciones. El historial conserva tanto la hora original de captura como la hora de recepción. | La incidencia aparece una sola vez en el historial, incluso después de varios intentos de envío. |
+| QA-03 | **Rendimiento de las alertas:** ICHU-US-02, ICHU-US-04, ICHU-US-08, ICHU-US-09 | El sistema central recibe una lectura válida que indica que un bovino salió de una geocerca activa, mientras los servicios se encuentran operativos. | El procesamiento de telemetría evalúa la regla, registra una alerta y la pone a disposición de los usuarios autorizados. | Como meta inicial, la alerta queda registrada en menos de 30 segundos desde la recepción de la lectura en el sistema central. |
+| QA-04 | **Seguridad:** ICHU-US-02, ICHU-US-16, ICHU-US-19 | Un usuario intenta consultar datos de una estancia a la que no pertenece o registrar una indicación clínica sin el permiso necesario. | La API verifica la identidad del usuario, la estancia y su rol antes de permitir la consulta o modificación. El intento rechazado queda registrado. | Una solicitud no autorizada no devuelve datos de la estancia ni modifica su historial. |
+| QA-05 | **Observabilidad:** ICHU-US-20 | Un dispositivo deja de transmitir durante un periodo superior al esperado. | El sistema conserva la fecha de su última transmisión y permite distinguir los datos recientes de los desactualizados. | La ficha del bovino muestra la hora de la última transmisión y el estado del dispositivo según el umbral configurado. |
+| QA-06 | **Modificabilidad:** ICHU-US-04, ICHU-US-21 | Un administrador autorizado modifica una geocerca o un criterio de severidad. | El módulo de reglas utiliza la nueva configuración para evaluar las lecturas posteriores y conserva el motivo de las alertas ya generadas. | La modificación no cambia las alertas históricas y puede comprobarse mediante pruebas de las reglas actualizadas. |
+
+En QA-03, el tiempo se mide desde que la lectura **llega al sistema central**. La conectividad rural puede retrasar la transmisión desde el dispositivo, por lo que ese retraso debe evaluarse por separado del tiempo de procesamiento de la alerta.
+
+### 4.2.4. Constraints
+
+| ID | Restricción | Efecto en el diseño |
+|---|---|---|
+| CON-01 | Los bovinos serán monitoreados mediante dispositivos IoT capaces de proporcionar datos de ubicación y variables biométricas o de actividad, según las capacidades del prototipo. | La recepción de telemetría debe validar cada lectura y asociarla con un dispositivo, un bovino y una fecha y hora de captura. |
+| CON-02 | La solución se utilizará en zonas rurales donde la conexión a internet puede ser intermitente. | Las funciones móviles de consulta y registro deben incluir almacenamiento local y sincronización posterior. |
+| CON-03 | El capítulo I establece que el prototipo del dispositivo se diseñará o simulará con herramientas autorizadas, como Cirkit Designer o Wokwi, y se comunicará con el Edge API. | Los datos enviados y las pruebas de integración deben poder verificarse con el prototipo o simulador disponible. |
+| CON-04 | SmartFarm tiene usuarios con responsabilidades diferentes: propietarios o administradores, operarios de campo y médicos veterinarios. | El sistema debe controlar el acceso a la información y a las acciones según el rol del usuario y la estancia autorizada. |
+| CON-05 | Las observaciones de campo y las actuaciones clínicas deben conservar su trazabilidad. | Los registros deben preservar la fecha de captura, el autor y el historial de eventos, sin sobrescribir la información anterior. |
+| CON-06 | El alcance inicial del producto debe seguir las historias clasificadas como **Must** en el Product Backlog. | El diseño debe priorizar la identificación de bovinos, la telemetría, las alertas, la atención de incidencias y el seguimiento clínico. |
+
+Estas restricciones se derivan de los requisitos actuales del informe. La elección de un proveedor de nube, una base de datos o una tecnología específica de mensajería deberá justificarse cuando se desarrollen las decisiones de diseño.
+
+### 4.2.5. Architectural Concerns
+
+| ID | Preocupación arquitectónica | Aspecto que debe resolver el diseño |
+|---|---|---|
+| ARC-01 | **Lecturas tardías o incompletas:** un dispositivo puede transmitir datos después de recuperar la conexión o enviar una lectura inválida. | Definir la validación de lecturas, el tratamiento de datos recibidos fuera de orden y la diferencia entre la hora de captura y la hora de recepción. |
+| ARC-02 | **Continuidad del trabajo en campo:** el operario necesita consultar información y registrar incidencias sin conexión. | Definir qué datos se almacenan en el teléfono, cómo se protegen y cómo se gestionan los errores de sincronización. |
+| ARC-03 | **Confiabilidad de las alertas:** una lectura aislada o duplicada podría producir una alerta incorrecta. | Definir las reglas de evaluación, la prevención de duplicados y el registro del motivo de cada alerta. |
+| ARC-04 | **Protección de la información:** los usuarios no deben acceder a datos de otras estancias o realizar acciones fuera de sus permisos. | Definir controles de acceso por estancia y rol, junto con el registro de las consultas y modificaciones sensibles. |
+| ARC-05 | **Coherencia del historial:** las observaciones, alertas y decisiones veterinarias deben asociarse con el bovino correcto. | Definir identificadores y relaciones que permitan conservar los eventos en su secuencia temporal, incluso si se sincronizan posteriormente. |
+| ARC-06 | **Estado de los dispositivos:** la ausencia de lecturas recientes puede confundirse con la ausencia de problemas en el animal. | Mostrar la última transmisión y la antigüedad de los datos, diferenciando el estado del dispositivo del estado del bovino. |
+
+Estas preocupaciones deberán considerarse en las iteraciones ADD, especialmente al diseñar la estructura general del sistema, la sincronización de datos, el procesamiento de alertas y la seguridad.
 
 ## 4.3 ADD Iterations
 ### 4.3.1 Iteration 1: Establishing Overall Architectural Structure and Container Decomposition  
