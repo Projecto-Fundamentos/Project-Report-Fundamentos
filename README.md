@@ -46,6 +46,8 @@
 
 ---
 
+<div style="page-break-after: always;"></div>
+
 # Registro de Versiones del Informe
 Esta sección resume las modificaciones relevantes realizadas al informe durante el ciclo de vida del proyecto. Cada línea corresponde a un único autor.
 
